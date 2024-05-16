@@ -1,4 +1,10 @@
 name: MyGithubActions-basics
+env:
+  EB_PACKAGE_S3_BUCKET_NAME: "github-packages11"
+  EB_APPLICATION_NAME: Flasky
+  EB_ENVIROMENT_NAME: FLASKY-env
+  DEPLOY_PACKAGE_NAME: "flask_app_${{github.sha}}.zip"
+  AWS_REGION_NAME: "us-east-1"
 
 on:
   push:
@@ -7,10 +13,14 @@ on:
 
 jobs:
   my_testing:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     
-  steps:
-  - name: Print Hello World
-    run: echo "Hello Wolrd"
+    steps:
+    - name: Git clone repo
+      uses: actions/checkout@v1
+      
+    - name: Create ZIp file for deploy
+      run: zip -r ${{env.DEPLOY_PACJAGE_NAME}} ./ -x *.git*
+      
   
 
